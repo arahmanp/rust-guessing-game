@@ -3,13 +3,30 @@ use std::io;
 fn main() {
     println!("Tebak angkanya!");
 
-    println!("Silakan masukkan tebakanmu.");
+    loop {
+        println!("Silakan masukkan tebakanmu.");
 
-    let mut guess = String::new();
+        let guess = loop {
+            let mut temp = String::new();
 
-    io::stdin()
-        .read_line(&mut guess)
-        .expect("Gagal membaca baris input");
+            io::stdin()
+                .read_line(&mut temp)
+                .expect("Gagal membaca baris input");
 
-    println!("Kamu menebak: {}", guess);
+            match temp.trim().parse::<i32>() {
+                Ok(num) => break num,
+                Err(_) => {
+                    println!("Masukkan sebuah angka!");
+                    continue;
+                }
+            }
+        };
+
+        if guess == -1 {
+            println!("Permainan selesai..");
+            break;
+        }
+
+        println!("Anda menebak {}", guess);
+    }
 }
